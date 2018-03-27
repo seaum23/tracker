@@ -17,26 +17,27 @@ class Stats extends Controller
         'is_root',
     ];
 
-    public function __construct()
+    public function __construct(Session $session)
     {
         $this->authentication = app()->make('tracker.authentication');
+        $this->session = $session;
     }
 
-    public function index(Session $session)
+    public function index()
     {
         if (!$this->isAuthenticated()) {
-            return View::make('pragmarx/tracker::message')->with('message', trans('tracker::tracker.auth_required'));
+            return View::make('pragmarx/tracker::message')->with('message', trans('pragmarx/tracker::tracker.auth_required'));
         }
 
         if (!$this->hasAdminProperty()) {
-            return View::make('pragmarx/tracker::message')->with('message', trans('tracker::tracker.miss_admin_prop'));
+            return View::make('pragmarx/tracker::message')->with('message', trans('pragmarx/tracker::tracker.miss_admin_prop'));
         }
 
         if (!$this->isAdmin()) {
-            return View::make('pragmarx/tracker::message')->with('message', trans('tracker::tracker.not_admin'));
+            return View::make('pragmarx/tracker::message')->with('message', trans('pragmarx/tracker::tracker.not_admin'));
         }
 
-        return $this->showPage($session, $session->getValue('page'));
+        return $this->showPage($this->session, $this->session->getValue('page'));
     }
 
     /**
@@ -51,28 +52,28 @@ class Stats extends Controller
         }
     }
 
-    public function visits(Session $session)
+    public function visits()
     {
         $datatables_data =
         [
             'datatables_ajax_route' => route('tracker.stats.api.visits'),
             'datatables_columns'    => '
-                { "data" : "id",          "title" : "'.trans('tracker::tracker.id').'", "orderable": true, "searchable": true },
-                { "data" : "client_ip",   "title" : "'.trans('tracker::tracker.ip_address').'", "orderable": true, "searchable": true },
-                { "data" : "country",     "title" : "'.trans('tracker::tracker.country_city').'", "orderable": true, "searchable": true },
-                { "data" : "user",        "title" : "'.trans('tracker::tracker.user').'", "orderable": true, "searchable": true },
-                { "data" : "device",      "title" : "'.trans('tracker::tracker.device').'", "orderable": true, "searchable": true },
-                { "data" : "browser",     "title" : "'.trans('tracker::tracker.browser').'", "orderable": true, "searchable": true },
-                { "data" : "language",    "title" : "'.trans('tracker::tracker.language').'", "orderable": true, "searchable": true },
-                { "data" : "referer",     "title" : "'.trans('tracker::tracker.referer').'", "orderable": true, "searchable": true },
-                { "data" : "pageViews",   "title" : "'.trans('tracker::tracker.page_views').'", "orderable": true, "searchable": true },
-                { "data" : "lastActivity","title" : "'.trans('tracker::tracker.last_activity').'", "orderable": true, "searchable": true },
+                { "data" : "id",          "title" : "'.trans('pragmarx/tracker::tracker.id').'", "orderable": true, "searchable": true },
+                { "data" : "client_ip",   "title" : "'.trans('pragmarx/tracker::tracker.ip_address').'", "orderable": true, "searchable": true },
+                { "data" : "country",     "title" : "'.trans('pragmarx/tracker::tracker.country_city').'", "orderable": true, "searchable": true },
+                { "data" : "user",        "title" : "'.trans('pragmarx/tracker::tracker.user').'", "orderable": true, "searchable": true },
+                { "data" : "device",      "title" : "'.trans('pragmarx/tracker::tracker.device').'", "orderable": true, "searchable": true },
+                { "data" : "browser",     "title" : "'.trans('pragmarx/tracker::tracker.browser').'", "orderable": true, "searchable": true },
+                { "data" : "language",    "title" : "'.trans('pragmarx/tracker::tracker.language').'", "orderable": true, "searchable": true },
+                { "data" : "referer",     "title" : "'.trans('pragmarx/tracker::tracker.referer').'", "orderable": true, "searchable": true },
+                { "data" : "pageViews",   "title" : "'.trans('pragmarx/tracker::tracker.page_views').'", "orderable": true, "searchable": true },
+                { "data" : "lastActivity","title" : "'.trans('pragmarx/tracker::tracker.last_activity').'", "orderable": true, "searchable": true },
             ',
         ];
 
         return View::make('pragmarx/tracker::index')
-            ->with('sessions', Tracker::sessions($session->getMinutes()))
-            ->with('title', ''.trans('tracker::tracker.visits').'')
+            ->with('sessions', Tracker::sessions($this->session->getMinutes()))
+            ->with('title', ''.trans('pragmarx/tracker::tracker.visits').'')
             ->with('username_column', Tracker::getConfig('authenticated_user_username_column'))
             ->with('datatables_data', $datatables_data);
     }
@@ -90,17 +91,17 @@ class Stats extends Controller
     public function summary()
     {
         return View::make('pragmarx/tracker::summary')
-                ->with('title', ''.trans('tracker::tracker.page_views_summary').'');
+                ->with('title', ''.trans('pragmarx/tracker::tracker.page_views_summary').'');
     }
 
-    public function apiPageviews(Session $session)
+    public function apiPageviews()
     {
-        return Tracker::pageViews($session->getMinutes())->toJson();
+        return Tracker::pageViews($this->session->getMinutes())->toJson();
     }
 
-    public function apiPageviewsByCountry(Session $session)
+    public function apiPageviewsByCountry()
     {
-        return Tracker::pageViewsByCountry($session->getMinutes())->toJson();
+        return Tracker::pageViewsByCountry($this->session->getMinutes())->toJson();
     }
 
     public function apiLog($uuid)
@@ -178,31 +179,31 @@ class Stats extends Controller
             ->make(true);
     }
 
-    public function users(Session $session)
+    public function users()
     {
         return View::make('pragmarx/tracker::users')
-            ->with('users', Tracker::users($session->getMinutes()))
-            ->with('title', ''.trans('tracker::tracker.users').'')
+            ->with('users', Tracker::users($this->session->getMinutes()))
+            ->with('title', ''.trans('pragmarx/tracker::tracker.users').'')
             ->with('username_column', Tracker::getConfig('authenticated_user_username_column'));
     }
 
-    private function events(Session $session)
+    private function events()
     {
         return View::make('pragmarx/tracker::events')
-            ->with('events', Tracker::events($session->getMinutes()))
-            ->with('title', ''.trans('tracker::tracker.events').'');
+            ->with('events', Tracker::events($this->session->getMinutes()))
+            ->with('title', ''.trans('pragmarx/tracker::tracker.events').'');
     }
 
-    public function errors(Session $session)
+    public function errors()
     {
         return View::make('pragmarx/tracker::errors')
-            ->with('error_log', Tracker::errors($session->getMinutes()))
-            ->with('title', ''.trans('tracker::tracker.errors').'');
+            ->with('error_log', Tracker::errors($this->session->getMinutes()))
+            ->with('title', ''.trans('pragmarx/tracker::tracker.errors').'');
     }
 
-    public function apiErrors(Session $session)
+    public function apiErrors()
     {
-        $query = Tracker::errors($session->getMinutes(), false);
+        $query = Tracker::errors($this->session->getMinutes(), false);
 
         $query->select([
                             'id',
@@ -219,18 +220,18 @@ class Stats extends Controller
                 ->make(true);
     }
 
-    public function apiEvents(Session $session)
+    public function apiEvents()
     {
-        $query = Tracker::events($session->getMinutes(), false);
+        $query = Tracker::events($this->session->getMinutes(), false);
 
         return Datatables::of($query)->make(true);
     }
 
-    public function apiUsers(Session $session)
+    public function apiUsers()
     {
         $username_column = Tracker::getConfig('authenticated_user_username_column');
 
-        return Datatables::of(Tracker::users($session->getMinutes(), false))
+        return Datatables::of(Tracker::users($this->session->getMinutes(), false))
                 ->edit_column('user_id', function ($row) use ($username_column) {
                     return "{$row->user->$username_column}";
                 })
@@ -240,11 +241,11 @@ class Stats extends Controller
                 ->make(true);
     }
 
-    public function apiVisits(Session $session)
+    public function apiVisits()
     {
         $username_column = Tracker::getConfig('authenticated_user_username_column');
 
-        $query = Tracker::sessions($session->getMinutes(), false);
+        $query = Tracker::sessions($this->session->getMinutes(), false);
 
         $query->select([
                 'id',

@@ -11,7 +11,7 @@ use PragmaRX\Support\IpAddress;
 use PragmaRX\Tracker\Data\RepositoryManager as DataRepositoryManager;
 use PragmaRX\Tracker\Repositories\Message as MessageRepository;
 use PragmaRX\Tracker\Support\Minutes;
-use Psr\Log\LoggerInterface;
+use Illuminate\Log\Writer as Logger;
 
 class Tracker
 {
@@ -45,7 +45,7 @@ class Tracker
         DataRepositoryManager $dataRepositoryManager,
         Request $request,
         Router $route,
-        LoggerInterface $logger,
+        Logger $logger,
         Laravel $laravel,
         MessageRepository $messageRepository
     ) {
@@ -430,7 +430,7 @@ class Tracker
     public function parserIsAvailable()
     {
         if (!$this->dataRepositoryManager->parserIsAvailable()) {
-            $this->logger->error(trans('tracker::tracker.regex_file_not_available'));
+            $this->logger->error(trans('pragmarx/tracker::tracker.regex_file_not_available'));
 
             return false;
         }

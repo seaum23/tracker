@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@lang("tracker::tracker.tracker_title")</title>
+    <title>@lang("pragmarx/tracker::tracker.tracker_title")</title>
 
 	<script src="{{ $stats_template_path }}/vendor/jquery/jquery.min.js"></script>
 

@@ -81,9 +81,9 @@ class ServiceProvider extends PragmaRXServiceProvider
 
         if (!isLaravel5()) {
             $this->bootTracker();
+        } else {
+            $this->loadTranslations();
         }
-
-        $this->loadTranslations();
     }
 
     /**

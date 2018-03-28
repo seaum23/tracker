@@ -2,7 +2,6 @@
 
 namespace PragmaRX\Tracker\Vendor\Laravel;
 
-use PragmaRX\Support\GeoIp\GeoIp;
 use PragmaRX\Support\PhpSession;
 use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
 use PragmaRX\Tracker\Data\Repositories\Agent;
@@ -36,6 +35,7 @@ use PragmaRX\Tracker\Services\Authentication;
 use PragmaRX\Tracker\Support\Cache;
 use PragmaRX\Tracker\Support\CrawlerDetector;
 use PragmaRX\Tracker\Support\Exceptions\Handler as TrackerExceptionHandler;
+use PragmaRX\Tracker\Support\GeoIp\GeoIp;
 use PragmaRX\Tracker\Support\LanguageDetect;
 use PragmaRX\Tracker\Support\MobileDetect;
 use PragmaRX\Tracker\Support\UserAgentParser;

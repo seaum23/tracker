@@ -132,7 +132,7 @@ class Session extends Repository
         $wasComplete = true;
 
         foreach ($this->sessionInfo as $key => $value) {
-            if ($sessionData[$key] !== $value) {
+            if ($sessionData[$key] !== $value && $this->model->isFillable($key)) {
                 if (!isset($model)) {
                     $model = $this->find($this->sessionInfo['id']);
                 }

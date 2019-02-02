@@ -519,16 +519,7 @@ For Laravel 4+ please use version 2.0.10.
 
 **Laravel 5**
 
-Publish the Trackers configuration file:
-
-    php artisan vendor:publish --provider=PragmaRX\\Tracker\\Vendor\\Laravel\\ServiceProvider
-
-If the Tracker.php does not publish into your `app\config` folder try:
-
-```
-php artisan vendor:publish --provider="PragmaRX\Tracker\Vendor\Laravel\ServiceProvider" --tag="config"
-
-```
+    php artisan vendor:publish --provider="PragmaRX\Tracker\Vendor\Laravel\ServiceProvider"
 
 #### Enable the Middleware (Laravel 5)
 
@@ -693,6 +684,10 @@ You may need to change your Tracker database connection configuration to
 ],
 
 ```
+
+### Base table or view not found: 1146 Table 'tracker.users' doesn't exist
+
+Already discussed [here] (https://github.com/antonioribeiro/tracker/issues/258#issuecomment-317065397)
 
 ## Author
 

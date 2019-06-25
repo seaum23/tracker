@@ -519,9 +519,11 @@ For Laravel 4+ please use version 2.0.10.
 
 **Laravel 5**
 
-    php artisan vendor:publish --provider=PragmaRX\\Tracker\\Vendor\\Laravel\\ServiceProvider
+    php artisan vendor:publish --provider="PragmaRX\Tracker\Vendor\Laravel\ServiceProvider"
 
 #### Enable the Middleware (Laravel 5)
+
+Open the newly published config file found at `app/config/tracker.php` and enable `use_middleware`:
 
 ```php
 'use_middleware' => true,
@@ -682,6 +684,25 @@ You may need to change your Tracker database connection configuration to
 ],
 
 ```
+
+## Not able to track users?
+
+If you get an error like:
+
+    Base table or view not found: 1146 Table 'tracker.users' doesn't exist
+
+You probably need to change: 
+
+    'user_model' => 'PragmaRX\Tracker\Vendor\Laravel\Models\User',
+
+To create (or use a current) a User model:
+
+    'user_model' => 'App\TrackerUser',
+
+And configure the Connection related to your users table:
+
+    protected $connection = 'mysql';
+
 
 ## Author
 

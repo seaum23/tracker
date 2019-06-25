@@ -2,8 +2,6 @@
 
 namespace PragmaRX\Tracker\Repositories;
 
-use Illuminate\Support\Collection;
-
 class Message
 {
     /**
@@ -18,7 +16,7 @@ class Message
      */
     public function __construct()
     {
-        $this->messageList = new Collection();
+        $this->messageList = collect();
     }
 
     /**
@@ -30,8 +28,10 @@ class Message
      */
     public function addMessage($message)
     {
-        (new Collection((array) $message))->each(function ($item) {
-            $this->messageList->push($item);
+        collect((array) $message)->each(function ($item) {
+            collect($item)->flatten()->each(function ($flattened) {
+                $this->messageList->push($flattened);
+            });
         });
     }
 

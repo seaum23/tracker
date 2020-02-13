@@ -176,10 +176,10 @@ class Stats extends Controller
             ->make(true);
     }
 
-    public function users()
+    public function users(Session $session)
     {
         return View::make('pragmarx/tracker::users')
-            ->with('users', Tracker::users($this->session->getMinutes()))
+            ->with('users', Tracker::users($session->getMinutes()))
             ->with('title', ''.trans('tracker::tracker.users').'')
             ->with('username_column', Tracker::getConfig('authenticated_user_username_column'));
     }

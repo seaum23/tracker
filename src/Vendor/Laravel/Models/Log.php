@@ -22,17 +22,17 @@ class Log extends Base
 
     public function session()
     {
-        return $this->belongsTo($this->getConfig()->get('session_model'));
+        return $this->belongsTo($this->getConfig()->get('session_model'), 'session_id');
     }
 
     public function path()
     {
-        return $this->belongsTo($this->getConfig()->get('path_model'));
+        return $this->belongsTo($this->getConfig()->get('path_model'), 'path_id');
     }
 
     public function error()
     {
-        return $this->belongsTo($this->getConfig()->get('error_model'));
+        return $this->belongsTo($this->getConfig()->get('error_model'), 'error_id');
     }
 
     public function logQuery()

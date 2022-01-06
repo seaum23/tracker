@@ -15,6 +15,14 @@
         }
     ],
 
+    "repositories": [
+        {
+            "type": "git",
+            "name": "pragmarx/datatables",
+            "url": "https://github.com/deivide/laravel4-datatables-package.git"
+        }
+    ],
+
     "require": {
         "php": ">=7.0",
         "doctrine/dbal": "^2.6",
@@ -23,7 +31,7 @@
         "ramsey/uuid": "^3 || ^4",
         "jenssegers/agent": "~2.1",
         "ua-parser/uap-php" : "~3.4",
-        "pragmarx/datatables": "^1.4.12",
+        "pragmarx/datatables": "dev-master",
         "snowplow/referer-parser": "~0.1",
         "jaybizzle/crawler-detect": "~1.0",
         "psr/log": "~1.0"

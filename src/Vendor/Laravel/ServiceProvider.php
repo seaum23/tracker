@@ -2,7 +2,6 @@
 
 namespace PragmaRX\Tracker\Vendor\Laravel;
 
-use PragmaRX\Support\PhpSession;
 use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
 use PragmaRX\Tracker\Data\Repositories\Agent;
 use PragmaRX\Tracker\Data\Repositories\Connection;
@@ -73,7 +72,7 @@ class ServiceProvider extends PragmaRXServiceProvider
     {
         parent::boot();
 
-        if (!$this->getConfig('enabled')) {
+        if (! $this->getConfig('enabled')) {
             return false;
         }
 
@@ -81,7 +80,7 @@ class ServiceProvider extends PragmaRXServiceProvider
 
         $this->registerErrorHandler();
 
-        if (!$this->getConfig('use_middleware')) {
+        if (! $this->getConfig('use_middleware')) {
             $this->bootTracker();
         }
 
@@ -281,7 +280,7 @@ class ServiceProvider extends PragmaRXServiceProvider
                 new Session(
                     $sessionModel,
                     $app['tracker.config'],
-                    new PhpSession()
+                    $app['session']
                 ),
                 $logRepository,
                 new Path($pathModel),
@@ -385,7 +384,7 @@ class ServiceProvider extends PragmaRXServiceProvider
     {
         $model = $this->getConfig($modelName);
 
-        if (!$model) {
+        if (! $model) {
             $message = "Tracker: Model not found for '$modelName'.";
 
             $this->app['log']->error($message);
@@ -408,7 +407,7 @@ class ServiceProvider extends PragmaRXServiceProvider
     {
         $me = $this;
 
-        if (!class_exists('Illuminate\Database\Events\QueryExecuted')) {
+        if (! class_exists('Illuminate\Database\Events\QueryExecuted')) {
             $this->app['events']->listen('illuminate.query', function (
                 $query,
                 $bindings,
@@ -454,7 +453,7 @@ class ServiceProvider extends PragmaRXServiceProvider
         });
 
         $this->app['events']->listen('*', function ($object = null) use ($me) {
-            if ($me->app['tracker.events']->isOff() || !$me->isFullyBooted()) {
+            if ($me->app['tracker.events']->isOff() || ! $me->isFullyBooted()) {
                 return;
             }
 
@@ -481,7 +480,7 @@ class ServiceProvider extends PragmaRXServiceProvider
 
     protected function loadRoutes()
     {
-        if (!$this->getConfig('stats_panel_enabled')) {
+        if (! $this->getConfig('stats_panel_enabled')) {
             return false;
         }
 
@@ -544,7 +543,7 @@ class ServiceProvider extends PragmaRXServiceProvider
      */
     public function getPackageDir()
     {
-        return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..';
     }
 
     /**
@@ -565,7 +564,7 @@ class ServiceProvider extends PragmaRXServiceProvider
         $this->app->make('view')->composer('pragmarx/tracker::*', function ($view) use ($me) {
             $view->with('stats_layout', $me->getConfig('stats_layout'));
 
-            $template_path = url('/').$me->getConfig('stats_template_path');
+            $template_path = url('/') . $me->getConfig('stats_template_path');
 
             $view->with('stats_template_path', $template_path);
         });
@@ -595,10 +594,10 @@ class ServiceProvider extends PragmaRXServiceProvider
             }, $bindings);
 
             $all_bindings_resolved =
-                (!in_array(false, $checked_bindings, true)) ?: false;
+            (! in_array(false, $checked_bindings, true)) ?: false;
 
             if ($me->tracker &&
-                !$me->userChecked &&
+                ! $me->userChecked &&
                 $me->getConfig('log_users') &&
                 $all_bindings_resolved
             ) {
@@ -612,7 +611,7 @@ class ServiceProvider extends PragmaRXServiceProvider
      */
     public function getTracker()
     {
-        if (!$this->tracker) {
+        if (! $this->tracker) {
             $this->tracker = $this->app['tracker'];
         }
 
@@ -621,7 +620,7 @@ class ServiceProvider extends PragmaRXServiceProvider
 
     public function getRootDirectory()
     {
-        return __DIR__.'/../..';
+        return __DIR__ . '/../..';
     }
 
     protected function getAppUrl()
@@ -631,7 +630,7 @@ class ServiceProvider extends PragmaRXServiceProvider
 
     public function loadTranslations()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'tracker');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'tracker');
     }
 
     /**

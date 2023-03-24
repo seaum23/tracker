@@ -55,7 +55,7 @@ class Handler implements ExceptionHandler
         }
 
         // Call Laravel Exception Handler
-        return call_user_func($this->originalErrorHandler, $err_severity, $err_msg, $err_file, $err_line);
+        return call_user_func($this->originalErrorHandler, $err_severity, $err_msg, $err_file, $err_line, $err_context);
     }
 
     public function report(Throwable $e)
